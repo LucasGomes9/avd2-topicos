@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tarefa", "Tarefa\Tarefa.csproj", "{07728446-D587-41B1-BF38-A22468A1BF56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tarefa.Database", "Tarefa.Database\Tarefa.Database.csproj", "{9FA10446-152A-4B43-9F30-1D833A46A097}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07728446-D587-41B1-BF38-A22468A1BF56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07728446-D587-41B1-BF38-A22468A1BF56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07728446-D587-41B1-BF38-A22468A1BF56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07728446-D587-41B1-BF38-A22468A1BF56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FA10446-152A-4B43-9F30-1D833A46A097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FA10446-152A-4B43-9F30-1D833A46A097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FA10446-152A-4B43-9F30-1D833A46A097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FA10446-152A-4B43-9F30-1D833A46A097}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {64B481DC-E54D-4878-8E0A-766191DC62F0}
+	EndGlobalSection
+EndGlobal

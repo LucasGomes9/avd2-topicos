@@ -1,0 +1,41 @@
+﻿@using Tarefa.Database.Models
+@using Tarefa.Database.Services
+@inject NotificationService _notify
+@inject AutenticacaoService _authService
+<EditForm OnValidSubmit="CriarCredenciaisAsync" Model="Model">
+    <div class="col-12">
+        <div class="form-group">
+            <label>Username:</label>
+            <InputText class="form-control" @bind-Value="Model.Username"></InputText>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="form-group">
+            <label>Password:</label>
+            <InputText class="form-control" @bind-Value="Model.Password" type="password"></InputText>
+        </div>
+    </div>
+    
+    <div class="col-12">
+        <button class="btn btn-primary" type="submit">Criar senha</button>
+    </div>
+</EditForm>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; }
+    [Parameter] public Guid GrupoId { get; set; }
+    
+    private CriarCredenciaisModel Model { get; set; } = new();
+    public async Task CriarCredenciaisAsync()
+    {
+        try
+        {
+            await _authService.CriarCredenciaisAsync(GrupoId, Model);
+            await ModalInstance.CloseAsync();
+        }
+        catch (Exception ex)
+        {
+            await _notify.Error(new() { Message = "Erro", Duration = 3, Description = ex.Message});
+        }
+    }
+}

@@ -1,0 +1,34 @@
+﻿@using Tarefa.Database.Models
+@using Tarefa.Database.Services
+@inject NotificationService _notify
+@inject GrupoService _grupoService
+
+<EditForm OnValidSubmit="CriarGrupoAsync" Model="Model">
+    <div class="col-12">
+        <div class="form-group">
+            <label>Nome do grupo:</label>
+            <InputText class="form-control" @bind-Value="Model.Nome"></InputText>
+        </div>
+    </div>
+    <div class="col-12">
+        <button class="btn btn-primary" type="submit">Criar grupo</button>
+    </div>
+</EditForm>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; }
+    
+    private CriarGrupoModel Model { get; set; } = new();
+    public async Task CriarGrupoAsync()
+    {
+        try
+        {
+            await _grupoService.CriarGrupoAsync(Model);
+            await ModalInstance.CloseAsync();
+        }
+        catch (Exception ex)
+        {
+            await _notify.Error(new() { Message = "Erro", Duration = 3, Description = ex.Message});
+        }
+    }
+}

@@ -1,0 +1,51 @@
+﻿@using Tarefa.Database.Models
+@using Tarefa.Database.Services
+@inject NotificationService _notify
+@inject PessoaService _pessoaService
+@inject GrupoService _grupoService
+
+<EditForm OnValidSubmit="CriarPessoaAsync" Model="Model">
+    <div class="col-12">
+        <div class="form-group">
+            <label>Nome:</label>
+            <InputText class="form-control" @bind-Value="Model.Nome"></InputText>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="form-group">
+            <label>Grupos:</label>
+            <BlazoredTypeahead SearchMethod="_grupoService.ProcurarGruposListaAsync"
+                               @bind-Values="@Model.Grupos"
+                               EnableDropDown="true"
+                               PreventDefault="true"
+                               ShowDropDownOnFocus="true">
+                <SelectedTemplate Context="group">
+                    @group.Nome
+                </SelectedTemplate>
+                <ResultTemplate Context="group">
+                    @group.Nome
+                </ResultTemplate>
+            </BlazoredTypeahead>
+            </div>
+    </div>
+    <div class="col-12">
+        <button class="btn btn-primary" type="submit">Criar pessoa</button>
+    </div>
+</EditForm>
+
+@code {
+    [CascadingParameter] BlazoredModalInstance ModalInstance { get; set; }
+    private CriarPessoaModel Model { get; set; } = new();
+    public async Task CriarPessoaAsync()
+    {
+        try
+        {
+            await _pessoaService.CriarPessoaAsync(Model);
+            await ModalInstance.CloseAsync();
+        }
+        catch (Exception ex)
+        {
+            await _notify.Error(new() { Message = "Erro", Duration = 3, Description = ex.Message});
+        }
+    }
+}

@@ -1,0 +1,95 @@
+﻿@page "/"
+@using Tarefa.Database.Services
+@inject GrupoService _grupoService
+
+<button class="btn btn-primary" @onclick="OpenCreatePessoa">Criar pessoa</button>
+<button class="btn btn-secondary" @onclick="OpenCreateGroup">Criar grupo</button>
+
+<div class="row">
+@foreach (var grupo in _grupos)
+{
+    <div style="margin-top: 15px" class="col-sm-12 col-md-6 col-lg-4">
+    <div class="card">
+        <div class="card-body">
+            <h1>@grupo.Nome</h1>
+
+            <h3><u>Pessoas no grupo:</u></h3>
+            @if (grupo.Pessoas is not null)
+            {
+                <ul>
+                    @foreach (var pessoa in grupo.Pessoas)
+                    {
+                        <li>@pessoa.Nome</li>
+                    }
+                </ul>
+            }
+            <hr/>
+            <h3><u>Senhas salvas:</u> <button class="btn btn-primary" @onclick="async () => await OpenCreatePass(grupo.Id)">+ Adicionar</button></h3>
+            @if (grupo.Autenticacoes is not null)
+            {
+                @foreach (var auth in grupo.Autenticacoes)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <p>Usuário: @auth.Usuario</p>
+                            <p>Senha: @auth.Senha</p>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    </div>
+}
+</div>
+@code
+{
+    [CascadingParameter] public IModalService Modal { get; set; }
+
+    private IEnumerable<Grupo> _grupos = Enumerable.Empty<Grupo>();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            await ReloadAsync();
+        }
+    }
+
+    private async Task ReloadAsync()
+    {
+        _grupos = await _grupoService.ObterGruposAsync();
+        StateHasChanged();
+    }
+
+    
+    public async Task OpenCreatePass(Guid groupId)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(CreateAuth.GrupoId), groupId);
+
+        var modal = Modal.Show<CreateAuth>("Adicionar Senha", parameters);
+        await modal.Result;
+        await ReloadAsync();
+    }
+    
+    
+    public async Task OpenCreatePessoa()
+    {
+        var parameters = new ModalParameters();
+
+        var modal = Modal.Show<CreatePessoa>("Adicionar usuário", parameters);
+        await modal.Result;
+        await ReloadAsync();
+    }
+    
+    public async Task OpenCreateGroup()
+    {
+        var parameters = new ModalParameters();
+
+        var modal = Modal.Show<CreateGroup>("Criar grupo", parameters);
+        await modal.Result;
+        await ReloadAsync();
+    }
+}
